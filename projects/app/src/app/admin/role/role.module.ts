@@ -30,8 +30,8 @@ import { SharedModule } from '../../shared/shared.module';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    RoleRoutingModule,
     SharedModule,
+    RoleRoutingModule,
   ],
 })
 export class RoleModule {}

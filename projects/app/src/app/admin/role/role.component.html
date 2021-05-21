@@ -24,13 +24,15 @@
       </div>
 
       <form [formGroup]="formGroup" (submit)="save($event)">
-        <mat-form-field class="w-100">
-          <mat-label>Nombre</mat-label>
-          <input matInput required [formControl]="nameControl" />
-          <mat-error *ngIf="nameControl.hasError('required')"
-            >Este campo es obligatorio</mat-error
-          >
-        </mat-form-field>
+        <p>
+          <mat-form-field class="w-100">
+            <mat-label>Nombre</mat-label>
+            <input matInput required [formControl]="nameControl" />
+            <mat-error *ngIf="nameControl.hasError('required')"
+              >Este campo es obligatorio</mat-error
+            >
+          </mat-form-field>
+        </p>
 
         <p class="m-t-5">
           <mat-slide-toggle formControlName="active">Activar</mat-slide-toggle>
