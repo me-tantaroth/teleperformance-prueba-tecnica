@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "teleperformance-prueba-tecnica": {
+      "hosting": {
+        "app": [
+          "teleperformance-prueba-tecnica"
+        ]
+      }
+    }
+  }
+}
