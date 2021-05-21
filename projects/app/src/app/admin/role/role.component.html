@@ -1,5 +1,11 @@
 <mat-drawer-container class="h-100" autosize>
-  <mat-drawer #drawer class="w-50" mode="over" position="end">
+  <mat-drawer
+    class="w-50"
+    #drawer
+    [(opened)]="sidenavOpened"
+    mode="over"
+    position="end"
+  >
     <div class="p-5">
       <h3>Formulario</h3>
 
@@ -49,37 +55,79 @@
       <div class="m-4 p-3">
         <h2>Lista de roles</h2>
         <div class="text-end">
-          <button type="button" mat-button (click)="drawer.toggle()">
+          <button
+            type="button"
+            mat-button
+            (click)="onNew($event); drawer.toggle()"
+          >
             Nuevo
           </button>
         </div>
       </div>
 
-      <div class="m-4" *ngIf="roleService.items$ | async; else NotFoundT">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Activo</th>
-              <th scope="col">Bloqueado</th>
-              <th scope="col">Fecha de creci&oacute;n</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of roleService.items$ | async; let i = index">
-              <th scope="row">{{ i + 1 }}</th>
-              <td>{{ item.name }}</td>
-              <td>{{ item.active ? "SI" : "NO" }}</td>
-              <td>{{ item.block ? "SI" : "NO" }}</td>
-              <td>{{ item.createdAt?.toDate() | date }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div
+        class="m-4"
+        *ngIf="roleService.items$ | async as items; else LoadingT"
+      >
+        <div *ngIf="items.length > 0; else NotFoundT">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Activo</th>
+                <th scope="col">Fecha de creci&oacute;n</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let item of roleService.items$ | async; let i = index"
+              >
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ item.name }}</td>
+                <td
+                  [ngClass]="{
+                    'text-success': item.active,
+                    'text-danger': !item.active
+                  }"
+                >
+                  {{ item.active ? "SI" : "NO" }}
+                </td>
+                <td>{{ item.createdAt | dateMilliseconds | date }}</td>
+                <td>
+                  <button
+                    mat-icon-button
+                    class="text-primary"
+                    (click)="onEdit($event, item)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    [ngClass]="{
+                      'text-muted': item.block,
+                      'text-danger': !item.block
+                    }"
+                    [matTooltip]="item.block ? '' : 'Eliminar'"
+                    [disabled]="item.block"
+                    (click)="onDelete($event, item)"
+                  >
+                    <mat-icon>delete_forever</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </mat-drawer-container>
+
+<ng-template #LoadingT>
+  <h1 class="text-center">Cargando...</h1>
+</ng-template>
 
 <ng-template #NotFoundT>
   <h1 class="text-center">Actualmente no hay datos</h1>
