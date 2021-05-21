@@ -1,1 +1,23 @@
-<p>auth works!</p>
+<div class="container m-5">
+  <h2>Ingresar</h2>
+  <p>
+    <mat-form-field class="w-100">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput type="email" #emailField />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field class="w-100">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" #passwordField />
+    </mat-form-field>
+  </p>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onLogin($event, emailField.value, passwordField.value)"
+  >
+    Ingresar
+  </button>
+</div>

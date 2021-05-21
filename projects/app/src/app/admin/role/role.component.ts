@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertModel } from '../../shared/models/alert.model';
-import { RoleModel } from './role.model';
+import { RoleExtraModel, RoleModel } from './role.model';
 import { RoleService } from './role.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogConfirmComponent } from '../../shared/components/dialog-confirm/dialog-confirm.component';
-
-interface RoleUIDModel extends RoleModel {
-  uid: string;
-}
 
 @Component({
   selector: 'app-role',
@@ -58,7 +54,7 @@ export class RoleComponent implements OnInit {
     event.stopPropagation();
 
     this.formGroup.patchValue(item);
-    this.currentUIDEdit = ((<unknown>item) as RoleUIDModel).uid;
+    this.currentUIDEdit = ((<unknown>item) as RoleExtraModel).uid;
     this.sidenavOpened = true;
   }
 
@@ -81,7 +77,7 @@ export class RoleComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         if (result === true) {
-          this.roleService.delete((item as RoleUIDModel).uid);
+          this.roleService.delete((item as RoleExtraModel).uid);
         }
       });
   }

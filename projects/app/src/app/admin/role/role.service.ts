@@ -7,14 +7,14 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RoleModel } from './role.model';
+import { RoleExtraModel, RoleModel } from './role.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleService {
   rolesCollection: AngularFirestoreCollection<RoleModel>;
-  items$: Observable<RoleModel[]>;
+  items$: Observable<RoleExtraModel[]>;
 
   constructor(firestore: AngularFirestore) {
     this.rolesCollection = firestore.collection<RoleModel>('roles');
@@ -25,7 +25,8 @@ export class RoleService {
             (<unknown>{
               ...docChangeAction.payload.doc.data(),
               uid: docChangeAction.payload.doc.id,
-            }) as RoleModel
+              ref: docChangeAction.payload.doc.ref,
+            }) as RoleExtraModel
         )
       )
     );

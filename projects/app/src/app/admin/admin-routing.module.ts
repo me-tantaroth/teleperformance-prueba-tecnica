@@ -9,6 +9,10 @@ const routes: Routes = [
     component: AdminComponent,
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
     path: 'user',
     canActivate: [RoleAccessGuard],
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
