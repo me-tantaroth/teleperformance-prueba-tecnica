@@ -13,6 +13,11 @@ const routes: Routes = [
     canActivate: [RoleAccessGuard],
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
+  {
+    path: 'role',
+    canActivate: [RoleAccessGuard],
+    loadChildren: () => import('./role/role.module').then((m) => m.RoleModule),
+  },
 ];
 
 @NgModule({

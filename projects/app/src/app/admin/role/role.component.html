@@ -1,0 +1,86 @@
+<mat-drawer-container class="h-100" autosize>
+  <mat-drawer #drawer class="w-50" mode="over" position="end">
+    <div class="p-5">
+      <h3>Formulario</h3>
+
+      <div
+        *ngIf="alert"
+        [class]="'alert alert-' + alert.type + ' alert-dismissible fade show'"
+        role="alert"
+      >
+        {{ alert.message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form [formGroup]="formGroup" (submit)="save($event)">
+        <mat-form-field class="w-100">
+          <mat-label>Nombre</mat-label>
+          <input matInput required [formControl]="nameControl" />
+          <mat-error *ngIf="nameControl.hasError('required')"
+            >Este campo es obligatorio</mat-error
+          >
+        </mat-form-field>
+
+        <p class="m-t-5">
+          <mat-slide-toggle formControlName="active">Activar</mat-slide-toggle>
+        </p>
+        <p>
+          <mat-slide-toggle formControlName="block">Bloquear</mat-slide-toggle>
+        </p>
+
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="formGroup.invalid"
+        >
+          Guardar
+        </button>
+      </form>
+    </div>
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <div class="container">
+      <div class="m-4 p-3">
+        <h2>Lista de roles</h2>
+        <div class="text-end">
+          <button type="button" mat-button (click)="drawer.toggle()">
+            Nuevo
+          </button>
+        </div>
+      </div>
+
+      <div class="m-4" *ngIf="roleService.items$ | async; else NotFoundT">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Activo</th>
+              <th scope="col">Bloqueado</th>
+              <th scope="col">Fecha de creci&oacute;n</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of roleService.items$ | async; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ item.name }}</td>
+              <td>{{ item.active ? "SI" : "NO" }}</td>
+              <td>{{ item.block ? "SI" : "NO" }}</td>
+              <td>{{ item.createdAt?.toDate() | date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</mat-drawer-container>
+
+<ng-template #NotFoundT>
+  <h1 class="text-center">Actualmente no hay datos</h1>
+</ng-template>
